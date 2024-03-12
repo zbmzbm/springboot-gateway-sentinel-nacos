@@ -23,7 +23,7 @@
 
 ## 代码详细
 
-###网关配置
+### 网关配置
 `server.port=8086
 spring.application.name=gateway
 spring.profiles.active=dev
@@ -49,8 +49,8 @@ spring.cloud.gateway.routes[0].uri=lb://demo
 spring.cloud.gateway.routes[0].predicates[0]=Path=/api/demo/**
 spring.cloud.gateway.routes[0].filters[0]=RewritePath=/api/?(?<segment>.*),/${segment}
 `
-###nacos配置
-####gateway-sentinel-flow-limit限流配置
+### nacos配置
+#### gateway-sentinel-flow-limit限流配置
 `
 [
 {
@@ -64,7 +64,7 @@ spring.cloud.gateway.routes[0].filters[0]=RewritePath=/api/?(?<segment>.*),/${se
 }
 ]
 `
-####gateway-sentinel-degrade降级配置
+#### gateway-sentinel-degrade降级配置
 `[
 {
 "resource": "demo",
