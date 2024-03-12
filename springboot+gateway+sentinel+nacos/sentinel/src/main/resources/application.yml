@@ -1,0 +1,67 @@
+# Tomcat
+server:
+  port: 8086
+
+# Spring
+spring:
+  application:
+    # 应用名称
+    name: gateway
+  profiles:
+    # 环境配置
+    active: dev
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    nacos:
+      discovery:
+        # 服务注册地址
+        server-addr: localhost:8848
+#      config:
+#        # 配置中心地址
+#        server-addr: localhost:8848
+#        # 配置文件格式
+#        file-extension: yml
+#        # 共享配置
+#        shared-configs:
+#          - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+
+    sentinel:
+      #心跳启动
+      eager: true
+      transport:
+        #sentinel控制台访问路径
+        dashboard: localhost:8082
+        port: 8082
+      #sentinel数据源配置(从哪里获取限流规则)
+      datasource:
+        ds:
+          nacos:
+            server-addr: localhost:8848
+            #限流规则配置文件的名称
+            dataId: gateway-sentinel-flow-limit
+            groupId: sentinel
+            data-type: json
+            rule-type: GW_FLOW #网关限流配置
+        ds1:
+          nacos:
+            server-addr: localhost:8848
+            #限流规则配置文件的名称
+            dataId: gateway-sentinel-degrade
+            groupId: sentinel
+            data-type: json
+            rule-type: DEGRADE #降级配置
+    gateway:
+      discovery:
+        locator:
+          lowerCaseServiceId: true
+          enabled: true
+      routes:
+        # 服务
+        - id: demo
+          uri: lb://demo
+          predicates:
+            - Path=/api/demo/**
+          filters:
+            - RewritePath=/api/?(?<segment>.*),/${segment}
+

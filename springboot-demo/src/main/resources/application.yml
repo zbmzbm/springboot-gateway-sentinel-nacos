@@ -1,0 +1,18 @@
+server:
+  port: 8081
+
+# Spring
+spring:
+  application:
+    # 应用名称
+    name: demo
+  profiles:
+    # 环境配置
+    active: dev
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    nacos:
+      discovery:
+        # 服务注册地址
+        server-addr: localhost:8848
